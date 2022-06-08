@@ -7,8 +7,8 @@
 // [x] read all
 // [x] read one by id
 // [x] create
-// [] edit
-// [] delete
+// [x] edit
+// [x] delete
 // [x] search
 // implement controllers
 // [x] home
@@ -18,8 +18,6 @@
 // [x] add front-end code
 
 
-
-
 const express=require('express');
 const hbs=require('express-handlebars');
 const carService=require('./services/cars');
@@ -27,6 +25,8 @@ const carService=require('./services/cars');
 const { about } = require('./controllers/about');
 const  create  = require('./controllers/create');
 const { details } = require('./controllers/details');
+const edit=require('./controllers/edit');
+const deleteCar =require('./controllers/delete');
 const { home } = require('./controllers/home');
 const { notFound } = require('./controllers/notFound');
 
@@ -38,7 +38,6 @@ app.engine('hbs', hbs.create({
 
 app.set('view engine', 'hbs');
 
-
 app.use(express.urlencoded({extended: true}));
 app.use("/static", express.static('static'));
 app.use(carService())
@@ -47,10 +46,10 @@ app.get('/', home);
 app.get('/about', about);
 app.get('/details/:id', details);
 app.route('/create').get(create.get).post(create.post);
+app.route('/delete/:id').get(deleteCar.get).post(deleteCar.post);
+app.route('/edit/:id').get(edit.get).post(edit.post);
 
 
 app.all('*', notFound);
-
-
 
 app.listen(3000, ()=>console.log('ready'));
