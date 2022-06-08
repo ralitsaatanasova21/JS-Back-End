@@ -1,0 +1,9 @@
+{
+    "car1": {
+        "name": "Nissan Skyline 2020",
+        "description": "Aside from ProPilot 2.0, another highlight is the new engine and power options. The base engine is a 3.0-liter twin-turbo V6 making 304 PS. For those who prefer a greener engine, there's also a hybrid which uses the same 3.0-liter engine, albeit naturally aspirated, and is paired with an electric motor. Combined output for the Skyline Hybrid is rated at 306 PS. Last but not least is the 400R, a tribute to the R33 400R from the 90's. Again, it uses the same twin-turbo V6 engine as the base model, but it's been heavily upgraded to put out 405 PS. Think of it then as a junior GT-R with four doors.",
+        "image": "5ad1c7c6264f79b669b32d11a549c3.jpg",
+        "price": 137667
+    }
+
+}
