@@ -1,0 +1,26 @@
+{
+  "car1": {
+    "name": "Nissan Skyline 2020",
+    "description": "Aside from ProPilot 2.0, another highlight is the new engine and power options. The base engine is a 3.0-liter twin-turbo V6 making 304 PS. For those who prefer a greener engine, there's also a hybrid which uses the same 3.0-liter engine, albeit naturally aspirated, and is paired with an electric motor. Combined output for the Skyline Hybrid is rated at 306 PS. Last but not least is the 400R, a tribute to the R33 400R from the 90's. Again, it uses the same twin-turbo V6 engine as the base model, but it's been heavily upgraded to put out 405 PS. Think of it then as a junior GT-R with four doors.",
+    "imageUrl": "5ad1c7c6264f79b669b32d11a549c3.jpg",
+    "price": 137667
+  },
+  "0c9c9b40-d259": {
+    "name": "Hyundai i30 2020",
+    "description": "The i30 is a front-wheel drive 4 door with 5 seats, powered by a 2.0L INLINE 4 engine that has 120 kW of power (at 6200 rpm) and 203 Nm of torque (at 4700 rpm) via a Six-speed Manual. HYUNDAI claims the i30 ACTIVE uses 7.3L/100km of Unleaded Petrol in the combined city and highway cycle while putting out 170g of CO2. It has a 50L fuel tank, meaning it should be able to travel 685km per full tank.",
+    "imageUrl": "hyundai-i30-iii-fastback-facelift-2020-[34644].jpg",
+    "price": 19400
+  },
+  "6e029932-b40a": {
+    "name": "Honda Civik 2020",
+    "description": "Consistently one of the best-selling compact cars, the Honda Civic earns its accolades by featuring a fun and engaging driving experience, impressive fuel economy, and superb interior packaging with room for five passengers. Last redesigned in 2016, the Civic is still a standout in its class, with subtle feature and styling enhancements for 2020.",
+    "imageUrl": "carpixel.net-2020-honda-civic-type-r-sport-line-98007-wide.jpg",
+    "price": 23800
+  },
+  "d3571c7c-6f27": {
+    "name": "AUDI RS7 2020",
+    "description": "The new Audi RS7 Sportback sits low to the ground. The flared wheel arches emphasize the spectacularly sporty nature of the high-performance model. The noticeable width is no optical illusion-at 1,950 millimeters (76.8 in) at the front fenders, the tape measure has to stretch an extra 20 millimeters (0.8 in) on each side over the Audi A7 Sportback.",
+    "imageUrl": "2020-Audi-RS7-Sportback-22-1200x628.jpg",
+    "price": 120000
+  }
+}
