@@ -1,55 +1,53 @@
-// [x] initialize and configure Express app
-// [x] initialize templating lib
-// [x] create home controller
-// [x] bind routing
-// [x] create layout
-// create data service
-// [x] read all
-// [x] read one by id
-// [x] create
-// [x] edit
-// [x] delete
-// [x] search
-// implement controllers
-// [x] home
-// [x] details
-// [x] create
-// [x] about
-// [x] add front-end code
+const express = require("express");
+const hbs = require("express-handlebars");
 
+const initDb = require("./models");
 
-const express=require('express');
-const hbs=require('express-handlebars');
-const carService=require('./services/cars');
+const carService = require("./services/cars");
+const accessoryService = require("./services/accessory");
 
-const { about } = require('./controllers/about');
-const  create  = require('./controllers/create');
-const { details } = require('./controllers/details');
-const edit=require('./controllers/edit');
-const deleteCar =require('./controllers/delete');
-const { home } = require('./controllers/home');
-const { notFound } = require('./controllers/notFound');
+const { home } = require("./controllers/home");
+const { about } = require("./controllers/about");
+const create = require("./controllers/create");
+const { details } = require("./controllers/details");
+const edit = require("./controllers/edit");
+const deleteCar = require("./controllers/delete");
+const accessory = require("./controllers/accessory");
+const attach = require("./controllers/attach");
 
-const app=express();
+const { notFound } = require("./controllers/notFound");
 
-app.engine('hbs', hbs.create({
-    extname: '.hbs'
-}).engine);
+start();
 
-app.set('view engine', 'hbs');
+async function start() {
+  await initDb();
 
-app.use(express.urlencoded({extended: true}));
-app.use("/static", express.static('static'));
-app.use(carService())
+  const app = express();
 
-app.get('/', home);
-app.get('/about', about);
-app.get('/details/:id', details);
-app.route('/create').get(create.get).post(create.post);
-app.route('/delete/:id').get(deleteCar.get).post(deleteCar.post);
-app.route('/edit/:id').get(edit.get).post(edit.post);
+  app.engine(
+    "hbs",
+    hbs.create({
+      extname: ".hbs",
+    }).engine
+  );
 
+  app.set("view engine", "hbs");
 
-app.all('*', notFound);
+  app.use(express.urlencoded({ extended: true }));
+  app.use("/static", express.static("static"));
+  app.use(carService());
+  app.use(accessoryService());
 
-app.listen(3000, ()=>console.log('ready'));
+  app.get("/", home);
+  app.get("/about", about);
+  app.get("/details/:id", details);
+  app.route("/create").get(create.get).post(create.post);
+  app.route("/delete/:id").get(deleteCar.get).post(deleteCar.post);
+  app.route("/edit/:id").get(edit.get).post(edit.post);
+  app.route("/accessory").get(accessory.get).post(accessory.post);
+  app.route("/attach/:id").get(attach.get).post(attach.post);
+
+  app.all("*", notFound);
+
+  app.listen(3000, () => console.log("ready"));
+}
