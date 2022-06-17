@@ -3,7 +3,7 @@ const { carViewModel } = require("./util");
 
 async function getAll(query) {
   const options = {
-    isDeleted: false
+    isDeleted: false,
   };
 
   if (query.search) {
@@ -25,7 +25,9 @@ async function getAll(query) {
 }
 
 async function getById(id) {
-  const car = await Car.findById(id).where({isDeleted: false}).populate('accessories');
+  const car = await Car.findById(id)
+    .where({ isDeleted: false })
+    .populate("accessories");
   if (car) {
     return carViewModel(car);
   } else {
@@ -38,13 +40,24 @@ async function createCar(car) {
   await result.save();
 }
 
-async function deleteById(id) {
-  // await Car.findByIdAndDelete(id);
-  await Car.findByIdAndUpdate(id, {isDeleted: true})
+async function deleteById(id, ownerId) {
+  const existing = await Car.findById(id).where({ isDeleted: false });
+
+  if (existing.owner != ownerId) {
+    return false;
+  }
+
+  await Car.findByIdAndUpdate(id, { isDeleted: true });
+  return true;
 }
 
-async function editById(id, car) {
-  const existing = await Car.findById(id).where({isDeleted: false});
+async function editById(id, car, ownerId) {
+  const existing = await Car.findById(id).where({ isDeleted: false });
+
+  if (existing.owner != ownerId) {
+    return false;
+  }
+
   existing.name = car.name;
   existing.description = car.description;
   existing.imageUrl = car.imageUrl || undefined;
@@ -52,10 +65,15 @@ async function editById(id, car) {
   existing.accessories = car.accessories;
 
   await existing.save();
+  return true;
 }
 
-async function attachAccessory(carId, accessoryId) {
+async function attachAccessory(carId, accessoryId, ownerId) {
   const existing = await Car.findById(carId);
+
+  if (existing.owner != ownerId) {
+    return false;
+  }
 
   existing.accessories.push(accessoryId);
 
