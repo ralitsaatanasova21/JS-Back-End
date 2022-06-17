@@ -158,6 +158,7 @@ form label {
 
 input[type=text],
 input[type=number],
+input[type=password],
 select,
 textarea {
     width: 100%;
@@ -228,6 +229,19 @@ img#sadFaceImg{
 
 h2{
     text-align: center;
+}
+
+.accessories .accessory{
+    display: inline-block;
+    background-color: #f3f3f2;
+    width: 675px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.accessories, .italic{
+    text-align: center;
+    font-style: italic;
 }
 
 footer {
