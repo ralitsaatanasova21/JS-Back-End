@@ -1,11 +1,33 @@
-const { validationResult } = require("express-validator");
+const { Router } = require("express");
+const { body, validationResult } = require("express-validator");
+const { mapError } = require("../services/util");
 
-module.exports = {
-  registerGet(req, res) {
-    res.render("register", { title: "Register" });
-  },
+const router = Router();
 
-  async registerPost(req, res) {
+router.get("/register", (req, res) => {
+  res.render("register", { title: "Register" });
+});
+
+router.post(
+  "/register",
+  body("username").trim(),
+  body("password").trim(),
+  body("repeatPassword").trim(),
+  body("username")
+    .isLength({ min: 3 })
+    .withMessage("Username must be at least 3 characters")
+    .isAlphanumeric()
+    .withMessage("Username may contain only alphanumeric characters"),
+  body("password")
+    .isLength({ min: 3 })
+    .withMessage("Password must be at least 3 characters")
+    .isAlphanumeric()
+    .withMessage("Password may contain only alphanumeric characters"),
+  body("repeatPassword")
+    .custom((value, { req }) => value == req.body.password)
+    .withMessage("Passwords don't match"),
+
+  async (req, res) => {
     const { errors } = validationResult(req);
 
     try {
@@ -14,32 +36,34 @@ module.exports = {
       }
       await req.auth.register(req.body.username, req.body.password);
       res.redirect("/");
-    } catch (errors) {
-      console.error(errors);
+    } catch (err) {
+      res.locals.errors = mapError(err);
       res.render("register", {
         title: "Register",
-        errors,
         data: { username: req.body.username },
       });
     }
-  },
+  }
+);
 
-  loginGet(req, res) {
-    res.render("login", { title: "Login" });
-  },
+router.get("/login", (req, res) => {
+  res.render("login", { title: "Login" });
+});
 
-  async loginPost(req, res) {
-    try {
-      await req.auth.login(req.body.username, req.body.password);
-      res.redirect("/");
-    } catch (err) {
-      console.error(err.message);
-      res.redirect("/login");
-    }
-  },
-
-  logout(req, res) {
-    req.auth.logout();
+router.post("/login", async (req, res) => {
+  try {
+    await req.auth.login(req.body.username, req.body.password);
     res.redirect("/");
-  },
-};
+  } catch (err) {
+    console.error(err.message);
+    res.locals.errors = mapError(err);
+    res.render("login", { title: "Login" });
+  }
+});
+
+router.get("/logout", (req, res) => {
+  req.auth.logout();
+  res.redirect("/");
+});
+
+module.exports = router;

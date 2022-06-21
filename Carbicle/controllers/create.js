@@ -14,12 +14,10 @@ module.exports = {
     try {
       await req.storage.createCar(car);
       res.redirect("/");
-    } catch (errors) {
-      if (errors.name == "ValidationError") {
-        errors = Object.values(errors.errors).map((p) => ({ msg: p.message }));
-      }
+    } catch (err) {
       console.log("Error creating record");
-      res.render("create", { title: "Create Listing", errors });
+      res.locals.errors = mapError(err);
+      res.render("create", { title: "Create Listing", car });
     }
   },
 };

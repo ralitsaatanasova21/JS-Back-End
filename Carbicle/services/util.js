@@ -7,7 +7,7 @@ function accessoryViewModel(accessory) {
     description: accessory.description,
     imageUrl: accessory.imageUrl,
     price: accessory.price,
-    owner: accessory.owner
+    owner: accessory.owner,
   };
 }
 
@@ -19,7 +19,7 @@ function carViewModel(car) {
     imageUrl: car.imageUrl,
     price: car.price,
     accessories: car.accessories,
-    owner: car.owner
+    owner: car.owner,
   };
 
   if (model.accessories.length > 0 && model.accessories[0].name) {
@@ -47,10 +47,29 @@ function isLoggedIn() {
   };
 }
 
+function mapError(error) {
+  if (Array.isArray(error)) {
+    return error;
+  } else if (error.name == "MongoServerError") {
+    if (error.code == 11000) {
+      return [{ msg: "Username already exist" }];
+    } else {
+      return [{ msg: "Request error" }];
+    }
+  } else if (error.name == "ValidatorError") {
+    return Object.values(error.errors).map((e) => ({ msg: e.message }));
+  } else if (typeof error.message == "string") {
+    return [{ msg: error.message }];
+  } else {
+    return [{ msg: "Request error" }];
+  }
+}
+
 module.exports = {
   accessoryViewModel,
   carViewModel,
   hashPassword,
   comparePassword,
   isLoggedIn,
+  mapError,
 };
