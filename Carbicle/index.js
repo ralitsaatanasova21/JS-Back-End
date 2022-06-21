@@ -27,6 +27,8 @@ const {
 const { notFound } = require("./controllers/notFound");
 const { isLoggedIn } = require("./services/util");
 
+const { body } = require("express-validator");
+
 start();
 
 async function start() {
@@ -80,7 +82,33 @@ async function start() {
     .route("/attach/:id")
     .get(isLoggedIn(), attach.get)
     .post(isLoggedIn(), attach.post);
-  app.route("/register").get(registerGet).post(registerPost);
+
+  app
+    .route("/register")
+    .get(registerGet)
+    .post(
+      body("username").trim().toInt(),
+      body("password").trim(),
+      body("repeatPassword").trim(),
+      body("username")
+        .isLength({ min: 3 })
+        .withMessage("Username must be at least 3 characters long!")
+        .bail()
+        .isAlphanumeric()
+        .withMessage("Username may contain only letters and numbers!"),
+      body("password")
+        .notEmpty()
+        .withMessage("Password is required!")
+        .isLength({ min: 5 })
+        .withMessage("Password must be at least 5 characters long!"),
+      body("repeatPassword").custom(async (value, { req }) => {
+        if (value != req.body.password) {
+          throw new Error("Passwords do not match!");
+        }
+      }),
+      registerPost
+    );
+
   app.route("/login").get(loginGet).post(loginPost);
   app.get("/logout", logout);
 

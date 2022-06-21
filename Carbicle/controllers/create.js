@@ -8,15 +8,18 @@ module.exports = {
       description: req.body.description,
       imageUrl: req.body.imageUrl || undefined,
       price: Number(req.body.price),
-      owner: req.session.user.id
+      owner: req.session.user.id,
     };
 
     try {
       await req.storage.createCar(car);
       res.redirect("/");
-    } catch (err) {
-      console.log('Error creating record');
-      res.redirect("/create");
+    } catch (errors) {
+      if (errors.name == "ValidationError") {
+        errors = Object.values(errors.errors).map((p) => ({ msg: p.message }));
+      }
+      console.log("Error creating record");
+      res.render("create", { title: "Create Listing", errors });
     }
   },
 };
